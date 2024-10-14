@@ -1,0 +1,363 @@
+[
+    {
+        "id": "e74e5ce375bde001",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1a6c155849b493ae",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.40.108",
+        "port": "1883",
+        "clientid": "node-red",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d4f4466b64aa51f3",
+        "type": "inject",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Test von NR",
+        "payloadType": "str",
+        "x": 170,
+        "y": 140,
+        "wires": [
+            [
+                "f9d335fde9e52533",
+                "4babb0f603f2b9fd"
+            ]
+        ]
+    },
+    {
+        "id": "f9d335fde9e52533",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "4babb0f603f2b9fd",
+        "type": "mqtt out",
+        "z": "e74e5ce375bde001",
+        "name": "test",
+        "topic": "test",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1a6c155849b493ae",
+        "x": 350,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ac0f257f8f24d682",
+        "type": "mqtt in",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "topic": "test",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "1a6c155849b493ae",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 380,
+        "wires": [
+            [
+                "56f54209500e8a3e"
+            ]
+        ]
+    },
+    {
+        "id": "56f54209500e8a3e",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "mqtt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "80a1ec30.4dc98",
+        "type": "exec",
+        "z": "e74e5ce375bde001",
+        "command": "ifconfig eth0",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "oldrc": false,
+        "name": "eth0",
+        "x": 330,
+        "y": 480,
+        "wires": [
+            [
+                "e3e938f8.5c2cc8"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1f689013.ff11b",
+        "type": "inject",
+        "z": "e74e5ce375bde001",
+        "name": "Startup",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0.1",
+        "topic": "",
+        "payload": "Startup",
+        "payloadType": "str",
+        "x": 124,
+        "y": 544,
+        "wires": [
+            [
+                "80a1ec30.4dc98",
+                "be7b4053.96bfa",
+                "928e47db03999bba"
+            ]
+        ]
+    },
+    {
+        "id": "e3e938f8.5c2cc8",
+        "type": "function",
+        "z": "e74e5ce375bde001",
+        "name": "Extract eth0",
+        "func": "// Initialize variables\nvar tokens, inet, bcast, mask;\nvar eth0 =   {\n    \"ip\" : null, \n    \"bcast\" : null, \n    \"mask\" : null\n}\n\n// Parse the entire string by spaces, and put each item into an array called tokens\ntokens = msg.payload.split(\"\\n\", 4);\nmsg.tokens = tokens;\n\n// check if IP exists\nif (tokens[1].indexOf('inet') == -1) {\n    msg.eth0 = eth0;\n    return msg;\n}\n\n// split possible ip\ntokens[1] = tokens[1].substr(tokens[1].indexOf('inet'));\ninet = tokens[1].split(\" \");\n\neth0.ip = inet[1];\neth0.bcast = inet[7];\neth0.mask = inet[4];\n\n// Don't send a message if the IF is the known default. Change to default ip.\nif (eth0.ip==\"192.168.0.120\") { \n    //outString = \"\"; // set output to null if ip is the same so no message is sent\n    msg.payload = \"NoIp\";\n} else {\n    // return the final output\n    msg.payload = eth0.ip;\n}\n\nmsg.eth0 = eth0;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 511.00002670288086,
+        "y": 468.0000023841858,
+        "wires": [
+            [
+                "233bbe8e.276a12"
+            ]
+        ]
+    },
+    {
+        "id": "be7b4053.96bfa",
+        "type": "exec",
+        "z": "e74e5ce375bde001",
+        "command": "hostname",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "hostname",
+        "x": 340.0000190734863,
+        "y": 543.0000152587891,
+        "wires": [
+            [
+                "1a0a998.c4a5167"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "233bbe8e.276a12",
+        "type": "exec",
+        "z": "e74e5ce375bde001",
+        "command": "ifconfig wlan0",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "wlan0",
+        "x": 680,
+        "y": 468,
+        "wires": [
+            [
+                "c0cfb0df.40d99"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1a0a998.c4a5167",
+        "type": "function",
+        "z": "e74e5ce375bde001",
+        "name": "Get Hostname",
+        "func": "msg.payload = msg.payload.slice(0,msg.payload.length-1);\n\nglobal.set(\"device\", msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 524,
+        "y": 524,
+        "wires": [
+            [
+                "c85307c7.3cd038"
+            ]
+        ]
+    },
+    {
+        "id": "c0cfb0df.40d99",
+        "type": "function",
+        "z": "e74e5ce375bde001",
+        "name": "Extract wlan0",
+        "func": "// Initialize variables\nvar tokens, inet, bcast, mask;\nvar wlan0 = {\n    \"ip\" : null,\n    \"bcast\" : null, \n    \"mask\" : null\n}\n\n// Parse the entire string by spaces, and put each item into an array called tokens\ntokens = msg.payload.split(\"\\n\", 4);\nmsg.tokens = tokens;\n\n// check if IP exists\nif (tokens[1].indexOf('inet') == -1) {\n    msg.wlan0 = wlan0;\n    return msg;\n}\n\n// split possible ip\ntokens[1] = tokens[1].substr(tokens[1].indexOf('inet'));\ninet = tokens[1].split(\" \");\n\nwlan0.ip = inet[1];\nwlan0.bcast = inet[7];\nwlan0.mask = inet[4];\n\n// Don't send a message if the IF is the known default. Change to default ip.\nif (wlan0.ip==\"192.168.0.120\") { \n    //outString = \"\"; // set output to null if ip is the same so no message is sent\n    msg.payload = \"NoIp\";\n} else {\n    // return the final output\n    msg.payload = wlan0.ip;\n}\n\nmsg.wlan0 = wlan0;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 448,
+        "wires": [
+            [
+                "e9ea53d0.a9008",
+                "a602217d.ece8c"
+            ]
+        ]
+    },
+    {
+        "id": "c85307c7.3cd038",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "Hostsname",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 714,
+        "y": 524,
+        "wires": []
+    },
+    {
+        "id": "e9ea53d0.a9008",
+        "type": "function",
+        "z": "e74e5ce375bde001",
+        "name": "Set IP Global",
+        "func": "var ip = \"NO-IP\";\nif (msg.eth0.ip !== null && msg.eth0.ip.length > 0) {\n    global.set(\"IP\", msg.eth0);\n    ip = msg.eth0.ip;\n} else {\n    if (msg.wlan0.ip.length > 0) {\n        global.set(\"IP\", msg.wlan0);\n        ip = msg.wlan0.ip;\n    }\n}\nvar url = \"http://\" + ip + \":1880\";\n\n// Set the Application URL (local)\nglobal.set(\"appurl\", url);\n\n// Set the IP-Address used by TJBot\nglobal.set(\"ipaddr\", ip);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1060,
+        "y": 448,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a602217d.ece8c",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "IP-Adresse",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 1054,
+        "y": 404,
+        "wires": []
+    },
+    {
+        "id": "928e47db03999bba",
+        "type": "exec",
+        "z": "e74e5ce375bde001",
+        "command": "ifconfig ",
+        "addpay": false,
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "eth0",
+        "x": 350,
+        "y": 620,
+        "wires": [
+            [
+                "916f7c24484fef96"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "916f7c24484fef96",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 620,
+        "wires": []
+    }
+]

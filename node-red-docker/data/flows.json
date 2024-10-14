@@ -1,0 +1,139 @@
+[
+    {
+        "id": "e74e5ce375bde001",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1a6c155849b493ae",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.40.108",
+        "port": "1883",
+        "clientid": "node-red",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d4f4466b64aa51f3",
+        "type": "inject",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Test von NR",
+        "payloadType": "str",
+        "x": 170,
+        "y": 140,
+        "wires": [
+            [
+                "f9d335fde9e52533",
+                "4babb0f603f2b9fd"
+            ]
+        ]
+    },
+    {
+        "id": "f9d335fde9e52533",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "4babb0f603f2b9fd",
+        "type": "mqtt out",
+        "z": "e74e5ce375bde001",
+        "name": "test",
+        "topic": "test",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1a6c155849b493ae",
+        "x": 350,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ac0f257f8f24d682",
+        "type": "mqtt in",
+        "z": "e74e5ce375bde001",
+        "name": "",
+        "topic": "test",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "1a6c155849b493ae",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 170,
+        "y": 380,
+        "wires": [
+            [
+                "56f54209500e8a3e"
+            ]
+        ]
+    },
+    {
+        "id": "56f54209500e8a3e",
+        "type": "debug",
+        "z": "e74e5ce375bde001",
+        "name": "mqtt",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 380,
+        "wires": []
+    }
+]

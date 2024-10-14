@@ -1,0 +1,18 @@
+services:
+  # node-red pai2024
+  nodered:
+    image: ohahnat/pai-nodered:node-red-build
+    container_name: nodered-pai2024
+    ports:
+      - "1880:1880" #default node-red port
+    volumes:
+      - ./data:/data:rw
+    restart: unless-stopped
+
+# volumes for mapping data
+volumes:
+  data:
+
+networks:
+  default:
+    name: nodered-network
