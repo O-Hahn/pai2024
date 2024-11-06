@@ -8,40 +8,6 @@
         "env": []
     },
     {
-        "id": "1a6c155849b493ae",
-        "type": "mqtt-broker",
-        "name": "",
-        "broker": "192.168.40.108",
-        "port": "1883",
-        "clientid": "node-red",
-        "autoConnect": true,
-        "usetls": false,
-        "protocolVersion": "3",
-        "keepalive": "60",
-        "cleansession": true,
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willPayload": "",
-        "willMsg": {},
-        "userProps": "",
-        "sessionExpiry": ""
-    },
-    {
-        "id": "ea5a60be017ba9da",
-        "type": "cloudantplus",
-        "host": "https://65203a1c-110e-437a-bc78-d95145d29a02-bluemix.cloudantnosqldb.appdomain.cloud",
-        "name": "fh-user",
-        "useapikey": true
-    },
-    {
         "id": "d4f4466b64aa51f3",
         "type": "inject",
         "z": "e74e5ce375bde001",
@@ -159,5 +125,39 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "1a6c155849b493ae",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.40.108",
+        "port": "1883",
+        "clientid": "node-red",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "3",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ea5a60be017ba9da",
+        "type": "cloudantplus",
+        "host": "https://65203a1c-110e-437a-bc78-d95145d29a02-bluemix.cloudantnosqldb.appdomain.cloud",
+        "name": "fh-user",
+        "useapikey": true
     }
 ]

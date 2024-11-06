@@ -2,7 +2,8 @@
 
 ## Install Docker
 
-Install Docker [here](https://docs.docker.com/engine/install/) on docker website.
+Install Docker [docker](https://docs.docker.com/engine/install/) on docker website.
+Install Podman [podman](https://podman-desktop.io/downloads) 
 
 ## Clone this Repo
 
